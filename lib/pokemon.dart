@@ -1,34 +1,32 @@
 class PokeHub {
-  List<Pokemon>? pokemon;
+  List<Pokemon> pokemon = [];
 
-  PokeHub({
-    this.pokemon,
-  });
-
-  PokeHub.fromJson(Map<String, dynamic> json) {
-    pokemon = (json['pokemon'] as List?)?.map((dynamic e) => Pokemon.fromJson(e as Map<String,dynamic>)).toList();
+  void fromJson(Map<String, dynamic> json) {
+    for (dynamic pokemonData in json['pokemon']) {
+      pokemon.add(Pokemon.fromJson(pokemonData));
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
-    json['pokemon'] = pokemon?.map((e) => e.toJson()).toList();
+    json['pokemon'] = pokemon.map((e) => e.toJson()).toList();
     return json;
   }
 }
 
 class Pokemon {
-  String? id;
-  String? num;
+  int? id;
+  String? n;
   String? name;
   String? img;
   List<String>? type;
   String? height;
   String? weight;
   String? candy;
-  String? candyCount;
+  int? candyCount;
   String? egg;
-  String? spawnChance;
-  String? avgSpawns;
+  double? spawnChance;
+  int? avgSpawns;
   String? spawnTime;
   List<double>? multipliers;
   List<String>? weaknesses;
@@ -36,7 +34,7 @@ class Pokemon {
 
   Pokemon({
     this.id,
-    this.num,
+    this.n,
     this.name,
     this.img,
     this.type,
@@ -53,29 +51,51 @@ class Pokemon {
     this.nextEvolution,
   });
 
-  Pokemon.fromJson(Map<String, dynamic> json) {
-    id = json['id'] as String?;
-    num = json['num'] as String?;
-    name = json['name'] as String?;
-    img = json['img'] as String?;
-    type = (json['type'] as List?)?.map((dynamic e) => e as String).toList();
-    height = json['height'] as String?;
-    weight = json['weight'] as String?;
-    candy = json['candy'] as String?;
-    candyCount = json['candy_count'] as String?;
-    egg = json['egg'] as String?;
-    spawnChance = json['spawn_chance'] as String?;
-    avgSpawns = json['avg_spawns'] as String?;
-    spawnTime = json['spawn_time'] as String?;
-    multipliers = (json['multipliers'] as List?)?.map((dynamic e) => e as double).toList();
-    weaknesses = (json['weaknesses'] as List?)?.map((dynamic e) => e as String).toList();
-    nextEvolution = (json['next_evolution'] as List?)?.map((dynamic e) => NextEvolution.fromJson(e as Map<String,dynamic>)).toList();
+  static Pokemon fromJson(dynamic json) {
+    int? id = json['id'];
+    String? n = json['num'];
+    String? name = json['name'];
+    String? img = json['img'];
+    List<String>? type = List<String>.from(json['type']);
+    String? height = json['height'];
+    String? weight = json['weight'];
+    String? candy = json['candy'];
+    int? candyCount = json['candy_count'];
+    String? egg = json['egg'];
+    double? spawnChance = json['spawn_chance'];
+    int? avgSpawns = json['avg_spawns'];
+    String? spawnTime = json['spawn_time'];
+    List<double>? multipliers = List<double>.from(json['multipliers']);
+    List<String>? weaknesses = List<String>.from(json['weaknesses']);
+    List<NextEvolution>? nextEvolution = List<NextEvolution>.from(
+      json['next_evolution']?.map(
+        (evolution) => NextEvolution.fromJson(evolution),
+      ),
+    );
+    return Pokemon(
+      id: id,
+      n: n,
+      name: name,
+      img: img,
+      type: type,
+      height: height,
+      weight: weight,
+      candy: candy,
+      candyCount: candyCount,
+      egg: egg,
+      spawnChance: spawnChance,
+      avgSpawns: avgSpawns,
+      spawnTime: spawnTime,
+      multipliers: multipliers,
+      weaknesses: weaknesses,
+      nextEvolution: nextEvolution,
+    );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = <String, dynamic>{};
     json['id'] = id;
-    json['num'] = num;
+    json['num'] = n;
     json['name'] = name;
     json['img'] = img;
     json['type'] = type;
@@ -103,9 +123,10 @@ class NextEvolution {
     this.name,
   });
 
-  NextEvolution.fromJson(Map<String, dynamic> json) {
-    num = json['num'] as String?;
-    name = json['name'] as String?;
+  static NextEvolution fromJson(Map<String, dynamic> json) {
+    String? numb = json['num'];
+    String? name = json['name'];
+    return NextEvolution(num: numb, name: name);
   }
 
   Map<String, dynamic> toJson() {
